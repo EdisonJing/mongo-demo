@@ -1,5 +1,6 @@
-package com.example.dao;
+package com.example.dao.impl;
 
+import com.example.dao.MongoBasicDao;
 import com.example.utils.MyClassUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,48 +14,56 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public abstract class MongoBasicsDAOImpl<T> implements MongoBasicDao<T> {
+public abstract class MongoBasicDaoImpl<T> implements MongoBasicDao<T> {
 
     @Autowired
-
     private MongoTemplate mongoTemplate;
-
 
     private Class<T> obj;
 
     /**
      * 获取T的实际类型
      */
-
-
-    protected MongoBasicsDAOImpl() {
+    protected MongoBasicDaoImpl() {
         Type type = getClass().getGenericSuperclass();
         Type trueType = ((ParameterizedType) type).getActualTypeArguments()[0];
         this.obj = (Class<T>) trueType;
     }
 
-
     @Override
-
-
-    public void mongoSave(Object obj) {
+    public void save(Object obj) {
         // TODO Auto-generated method stub
         mongoTemplate.save(obj);
     }
 
-
     @Override
-
-
-    public void mongoDelete(String key, String value) {
+    public void delete(String key, String value) {
         // TODO Auto-generated method stub
         Query query = new Query(Criteria.where(key).is(value));
         mongoTemplate.remove(query, obj);
     }
 
+    @Override
+    public void delete(T o) throws Exception {
+        Query query = new Query(Criteria.where("id").is(MyClassUtils.getFieldValueByName("id", o)));
+        mongoTemplate.remove(query, obj);
+    }
+
 
     @Override
-    public void mongoUpdate(String key, String value, Object o) throws Exception {
+    public void update(Query query,T o) throws Exception {
+        Update update = new Update();
+        String[] field = MyClassUtils.getFieldName(o);
+
+        for (int j = 0; j < field.length; j++) {
+            Object v = MyClassUtils.getFieldValueByName(field[j], o);
+            update.set(field[j], v);
+        }
+        mongoTemplate.updateFirst(query, update, obj);
+    }
+
+    @Override
+    public void update(String key, String value, Object o) throws Exception {
         Query query = new Query(Criteria.where(key).is(value));
         Update update = new Update();
         String[] field = MyClassUtils.getFieldName(o);
@@ -67,19 +76,17 @@ public abstract class MongoBasicsDAOImpl<T> implements MongoBasicDao<T> {
         mongoTemplate.updateFirst(query, update, obj);
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
-    public T mongoSingleTableSelete(String key, String value) {
+    public T singleTableSelete(String key, String value) {
         // TODO Auto-generated method stub
         Query query = new Query(Criteria.where(key).is(value));
         Type t = this.getClass().getGenericSuperclass();
         return (T) mongoTemplate.findOne(query, obj);
     }
 
-
     @Override
-    public List<T> mongoPagingSelete(Integer pageIndex, Integer pageSize) {
+    public List<T> pageSelete(Integer pageIndex, Integer pageSize) {
         // TODO Auto-generated method stub
         Query query = new Query();
         //Pageable pageable = new PageRequest(pageIndex ,pageSize);
@@ -88,9 +95,8 @@ public abstract class MongoBasicsDAOImpl<T> implements MongoBasicDao<T> {
         return (List<T>) mongoTemplate.find(query, obj);
     }
 
-
     @Override
-    public List mongoCompositeSelete() {
+    public List compositeSelete() {
         // TODO Auto-generated method stub
         return null;
     }

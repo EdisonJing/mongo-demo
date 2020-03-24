@@ -1,11 +1,7 @@
 package com.example.mongotest2;
 
 import com.example.entity.User;
-import com.example.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.DateUtil;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -67,7 +63,7 @@ class Mongotest2ApplicationTests {
     @Test
     public void findByDate() {
         Query query = new Query(
-                Criteria.where("birthday").lte(new LocalDate(2020,3,20))
+                Criteria.where("birthday").lte(LocalDate.of(2020,3,20))
         );
 
         List<User> list = mongoTemplate.find(query,User.class);

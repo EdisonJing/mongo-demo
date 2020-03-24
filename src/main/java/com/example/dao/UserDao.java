@@ -1,4 +1,10 @@
 package com.example.dao;
 
-public class UserDao {
+import com.example.dao.impl.MongoBasicDaoImpl;
+import com.example.entity.User;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UserDao extends MongoBasicDaoImpl<User> {
+
 }

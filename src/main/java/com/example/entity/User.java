@@ -1,8 +1,9 @@
 package com.example.entity;
 
 import lombok.Data;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -11,4 +12,5 @@ public class User {
     private String name;
     private String sex;
     private LocalDate birthday;
+    private LocalDateTime createTime;
 }
