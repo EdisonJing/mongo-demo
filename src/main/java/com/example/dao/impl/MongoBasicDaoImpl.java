@@ -18,7 +18,7 @@ import java.util.Map;
 public abstract class MongoBasicDaoImpl<T> implements MongoBasicDao<T> {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 
     private Class<T> obj;
 

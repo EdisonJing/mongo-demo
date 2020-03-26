@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
 
         return userDao.pageSelete(params,pageNum, size);
     }
+
+    @Override
+    public List<User> like(User user) {
+        return userDao.like(user);
+    }
 }

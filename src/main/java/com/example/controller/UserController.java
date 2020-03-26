@@ -36,5 +36,9 @@ public class UserController {
         return userService.page(params, pageNum, size);
     }
 
+    @PostMapping("like")
+    public List<User> like(@RequestBody User user){
+        return userService.like(user);
+    }
 
 }
