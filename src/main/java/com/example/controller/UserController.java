@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -14,14 +15,15 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public Integer saveUser(@RequestBody User user){
+    public Integer saveUser(@RequestBody User user) {
         userService.save(user);
         return user.getId();
     }
 
     @PutMapping()
-    public void updateUser(@RequestBody User user) throws Exception {
+    public User updateUser(@RequestBody User user) throws Exception {
         userService.updateById(user);
+        return user;
     }
 
     @DeleteMapping()
@@ -29,9 +31,10 @@ public class UserController {
         userService.delete(user);
     }
 
-    @GetMapping("page")
-    public List<User> page(int pageNum, int size) throws Exception {
-        return userService.page(pageNum,size);
+    @PostMapping("page")
+    public List<User> page(@RequestBody Map<String,Object> params, int pageNum, int size) throws Exception {
+        return userService.page(params, pageNum, size);
     }
+
 
 }

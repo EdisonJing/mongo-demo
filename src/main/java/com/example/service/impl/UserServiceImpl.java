@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> page(int pageNum, int size) throws Exception {
-        return userDao.pagingSelete(pageNum, size);
+    public List<User> page(Map<String,Object> params, int pageNum, int size) throws Exception {
+
+        return userDao.pageSelete(params,pageNum, size);
     }
 }

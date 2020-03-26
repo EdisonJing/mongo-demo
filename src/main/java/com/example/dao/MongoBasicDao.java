@@ -3,6 +3,7 @@ package com.example.dao;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MongoBasicDao<T> {
     void save(T obj);
@@ -16,6 +17,8 @@ public interface MongoBasicDao<T> {
     T singleTableSelete(String key, String value);
 
     List<T> pageSelete(Integer pageIndex, Integer pageSize);
+
+    List<T> pageSelete(Map<String, Object> params, Integer pageIndex, Integer pageSize);
 
     List<T> compositeSelete();
 

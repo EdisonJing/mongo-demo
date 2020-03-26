@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 public abstract class MongoBasicDaoImpl<T> implements MongoBasicDao<T> {
 
@@ -90,6 +91,19 @@ public abstract class MongoBasicDaoImpl<T> implements MongoBasicDao<T> {
         // TODO Auto-generated method stub
         Query query = new Query();
         //Pageable pageable = new PageRequest(pageIndex ,pageSize);
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
+        query.with(pageable);
+        return (List<T>) mongoTemplate.find(query, obj);
+    }
+
+    @Override
+    public List<T> pageSelete(Map<String, Object> params, Integer pageIndex, Integer pageSize) {
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        params.forEach((k,v)->{
+            criteria.where(k).is(v);
+        });
+        query.addCriteria(criteria);
         Pageable pageable = PageRequest.of(pageIndex, pageSize);
         query.with(pageable);
         return (List<T>) mongoTemplate.find(query, obj);
