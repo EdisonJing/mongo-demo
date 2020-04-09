@@ -3,10 +3,10 @@ package com.example.controller;
 import com.example.entity.Doc;
 import com.example.entity.DocVo;
 import com.example.service.DocService;
+import com.example.utils.MapObjUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -56,5 +56,12 @@ public class DocController {
     @PostMapping("between")
     public List<Doc> between(@RequestBody DocVo docVo) {
         return docService.between(docVo.getBegin(), docVo.getEnd());
+    }
+
+    @PostMapping("map")
+    public int savemapdoc(@RequestBody Map<String,Object> map) throws Exception {
+        Doc doc = MapObjUtils.mapToObject(map, Doc.class);
+        docService.save(doc);
+        return doc.getId();
     }
 }

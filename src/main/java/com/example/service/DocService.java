@@ -22,4 +22,5 @@ public interface DocService {
     List<Doc> list(Doc doc);
 
     List<Doc> between(LocalDate begin, LocalDate end);
+
 }
